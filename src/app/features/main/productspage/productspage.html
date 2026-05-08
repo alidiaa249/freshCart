@@ -1,0 +1,36 @@
+<div class="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 text-white">
+    <div class="container mx-auto px-4 py-10 sm:py-14">
+        <nav class="flex items-center gap-2 text-sm text-white/70 mb-6 flex-wrap">
+            <a class="hover:text-white transition-colors" routerLink="/">Home</a>
+            <span class="text-white/40">/</span>
+            @if (brandName()) {
+                <a class="hover:text-white transition-colors" routerLink="/brands">Brands</a>
+            } @else {
+                <a class="hover:text-white transition-colors" routerLink="/categories">Categories</a>
+            }
+            <span class="text-white/40">/</span>
+            <span class="text-white font-medium">{{ subcategoryName() || brandName() || 'Products' }}</span>
+        </nav>
+        <div class="flex items-center gap-5">
+            <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-xl ring-1 ring-white/30">
+                <svg data-prefix="fas" data-icon="folder-open" class="svg-inline--fa fa-folder-open text-3xl" role="img" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M56 225.6L32.4 296.2 32.4 96c0-35.3 28.7-64 64-64l138.7 0c13.8 0 27.3 4.5 38.4 12.8l38.4 28.8c5.5 4.2 12.3 6.4 19.2 6.4l117.3 0c35.3 0 64 28.7 64 64l0 16-365.4 0c-41.3 0-78 26.4-91.1 65.6zM477.8 448L99 448c-32.8 0-55.9-32.1-45.5-63.2l48-144C108 221.2 126.4 208 147 208l378.8 0c32.8 0 55.9 32.1 45.5 63.2l-48 144c-6.5 19.6-24.9 32.8-45.5 32.8z"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">{{ subcategoryName() || brandName() || 'Products' }}</h1>
+                <p class="text-white/80 mt-1">Browse products</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    @if (subcategoryName()) {
+    <div class="mb-6 flex items-center gap-3 flex-wrap"><span class="flex items-center gap-2 text-sm text-gray-600"><svg data-prefix="fas" data-icon="filter" class="svg-inline--fa fa-filter" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M32 64C19.1 64 7.4 71.8 2.4 83.8S.2 109.5 9.4 118.6L192 301.3 192 416c0 8.5 3.4 16.6 9.4 22.6l64 64c9.2 9.2 22.9 11.9 34.9 6.9S320 492.9 320 480l0-178.7 182.6-182.6c9.2-9.2 11.9-22.9 6.9-34.9S492.9 64 480 64L32 64z"></path></svg>Active Filters:</span><a class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium hover:bg-emerald-200 transition-colors" [routerLink]="['/products']" [queryParams]="{ subcategory: subcategoryId() }">{{ subcategoryName() }}<svg data-prefix="fas" data-icon="xmark" class="svg-inline--fa fa-xmark text-xs" role="img" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"></path></svg></a><a class="text-sm text-gray-500 hover:text-gray-700 underline" routerLink="/products">Clear all</a></div>
+    } @else if (brandName()) {
+    <div class="mb-6 flex items-center gap-3 flex-wrap"><span class="flex items-center gap-2 text-sm text-gray-600"><svg data-prefix="fas" data-icon="filter" class="svg-inline--fa fa-filter" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M32 64C19.1 64 7.4 71.8 2.4 83.8S.2 109.5 9.4 118.6L192 301.3 192 416c0 8.5 3.4 16.6 9.4 22.6l64 64c9.2 9.2 22.9 11.9 34.9 6.9S320 492.9 320 480l0-178.7 182.6-182.6c9.2-9.2 11.9-22.9 6.9-34.9S492.9 64 480 64L32 64z"></path></svg>Active Filters:</span><a class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium hover:bg-emerald-200 transition-colors" [routerLink]="['/products']" >{{ brandName() }}<svg data-prefix="fas" data-icon="xmark" class="svg-inline--fa fa-xmark text-xs" role="img" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"></path></svg></a><a class="text-sm text-gray-500 hover:text-gray-700 underline" routerLink="/products">Clear all</a></div>
+    }
+    <div class="mb-6 text-sm text-gray-500">Showing {{ products().length }} products</div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+        <app-featureproducts [products]="products()" />
+    </div>
+</div>

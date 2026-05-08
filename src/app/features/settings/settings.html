@@ -1,0 +1,166 @@
+<main class="flex-1 min-w-0">
+  <div class="space-y-6">
+    <div class="mb-6">
+      <h2 class="text-xl font-bold text-gray-900">Account Settings</h2>
+      <p class="text-gray-500 text-sm mt-1">Update your profile information and change your password</p>
+    </div>
+
+    @if (userUpdateSuccess()) {
+      <div class="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm border border-green-200">
+        Profile updated successfully!
+      </div>
+    }
+
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="p-6 sm:p-8 border-b border-gray-100">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-primary-100 flex items-center justify-center">
+            <svg data-prefix="fas" data-icon="user" class="svg-inline--fa fa-user text-2xl text-primary-600" role="img" viewBox="0 0 448 512" aria-hidden="true">
+              <path fill="currentColor" d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900">Profile Information</h3>
+            <p class="text-sm text-gray-500">Update your personal details</p>
+          </div>
+        </div>
+      </div>
+
+      <form class="p-6 sm:p-8 space-y-5" [formGroup]="userForm" (ngSubmit)="submitUserUpdate()">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+          <input
+            formControlName="name"
+            placeholder="Enter your name"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+            type="text"
+          >
+          @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+            <p class="text-red-500 text-xs mt-1">Name is required</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <input
+            formControlName="email"
+            placeholder="Enter your email"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+            type="email"
+          >
+          @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+            <p class="text-red-500 text-xs mt-1">Valid email is required</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+          <input
+            formControlName="phone"
+            placeholder="01xxxxxxxxx"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+            type="tel"
+          >
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50 shadow-lg shadow-primary-600/25"
+            [disabled]="userForm.invalid"
+          >
+            <svg data-prefix="fas" data-icon="floppy-disk" class="svg-inline--fa fa-floppy-disk" role="img" viewBox="0 0 448 512" aria-hidden="true">
+              <path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64L448 224c0-35.3-28.7-64-64-64L224 160 224 96c0-35.3-28.7-64-64-64L64 32zm32 96c0-17.7 14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"></path>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </form>
+
+      <div class="p-6 sm:p-8 bg-gray-50">
+        <h3 class="font-bold text-gray-900 mb-4">Account Information</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-500">User ID</span>
+            <span class="font-mono text-gray-700">{{ authService.user()?.['id'] || 'N/A' }}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-500">Role</span>
+            <span class="px-3 py-1 rounded-lg bg-primary-100 text-primary-700 font-medium capitalize">{{ authService.user()?.['role'] || 'user' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (passUpdateSuccess()) {
+      <div class="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm border border-green-200">
+        Password updated successfully!
+      </div>
+    }
+
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center">
+            <svg data-prefix="fas" data-icon="lock" class="svg-inline--fa fa-lock text-2xl text-amber-600" role="img" viewBox="0 0 384 512" aria-hidden="true">
+              <path fill="currentColor" d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900">Change Password</h3>
+            <p class="text-sm text-gray-500">Update your account password</p>
+          </div>
+        </div>
+
+        <form class="space-y-5" [formGroup]="passwordForm" (ngSubmit)="submitPasswordUpdate()">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+            <input
+              formControlName="currentPassword"
+              placeholder="Enter your current password"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+              type="password"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+            <input
+              formControlName="password"
+              placeholder="Enter your new password"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+              type="password"
+            >
+            <p class="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+            @if (passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched) {
+              <p class="text-red-500 text-xs mt-1">Password must be at least 6 characters</p>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+            <input
+              formControlName="rePassword"
+              placeholder="Confirm your new password"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+              type="password"
+            >
+          </div>
+
+          <div class="pt-4">
+            <button
+              type="submit"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-600 text-white font-semibold hover:bg-amber-700 transition-colors disabled:opacity-50 shadow-lg shadow-amber-600/25"
+              [disabled]="passwordForm.invalid"
+            >
+              <svg data-prefix="fas" data-icon="lock" class="svg-inline--fa fa-lock" role="img" viewBox="0 0 384 512" aria-hidden="true">
+                <path fill="currentColor" d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"></path>
+              </svg>
+              Change Password
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

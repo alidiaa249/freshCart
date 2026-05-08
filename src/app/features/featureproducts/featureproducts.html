@@ -1,0 +1,69 @@
+
+       @for (product of products(); track product._id) {
+         <div id="product-card" class="bg-white border border-gray-200 rounded-lg overflow-hidden" style="box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; transform: none;">
+          <div class="relative">
+            <img class="w-full h-60 object-contain bg-white" [src]="product.imageCover" [alt]="product.title">
+            <div class="absolute top-3 left-3">
+              @if (product.priceAfterDiscount)
+              {
+                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">-<!-- -->{{product.price | percentge : product.priceAfterDiscount}}<!-- -->%</span>
+              }
+            </div>
+            <div class="absolute top-3 right-3 flex flex-col space-y-2">
+              <button (click)="toggleWishlist(product)" class=" cursor-pointer bg-white h-8 w-8 rounded-full flex items-center justify-center transition shadow-sm" [class.text-red-500]="isInWishlist(product._id)" [class.text-gray-600]="!isInWishlist(product._id)" title="Add to wishlist" tabindex="0">
+                @if (isInWishlist(product._id)) {
+                  <svg data-prefix="fas" data-icon="heart" class="svg-inline--fa fa-heart" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"></path></svg>
+                } @else {
+                  <svg data-prefix="far" data-icon="heart" class="svg-inline--fa fa-heart" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M378.9 80c-27.3 0-53 13.1-69 35.2l-34.4 47.6c-4.5 6.2-11.7 9.9-19.4 9.9s-14.9-3.7-19.4-9.9l-34.4-47.6c-16-22.1-41.7-35.2-69-35.2-47 0-85.1 38.1-85.1 85.1 0 49.9 32 98.4 68.1 142.3 41.1 50 91.4 94 125.9 120.3 3.2 2.4 7.9 4.2 14 4.2s10.8-1.8 14-4.2c34.5-26.3 84.8-70.4 125.9-120.3 36.2-43.9 68.1-92.4 68.1-142.3 0-47-38.1-85.1-85.1-85.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 68.6-42.9 128.9-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.3 9.4-27.5 14.1-43.1 14.1s-30.8-4.7-43.1-14.1C176.4 438 123.2 391.5 79.1 338 42.9 294.1 0 233.7 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z"></path></svg>
+                }
+              </button>
+              <button class="bg-white h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-primary-600 shadow-sm">
+                <svg data-prefix="fas" data-icon="arrows-rotate" class="svg-inline--fa fa-arrows-rotate" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z"></path></svg>
+              </button>
+              <a class="bg-white h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-primary-600 shadow-sm" [routerLink]="['/products', product._id]">
+                <svg data-prefix="far" data-icon="eye" class="svg-inline--fa fa-eye" role="img" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M288 80C222.8 80 169.2 109.6 128.1 147.7 89.6 183.5 63 226 49.4 256 63 286 89.6 328.5 128.1 364.3 169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256 513 226 486.4 183.5 447.9 147.7 406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7 46.2-87.7 93-131.1zM288 336c44.2 0 80-35.8 80-80 0-29.6-16.1-55.5-40-69.3-1.4 59.7-49.6 107.9-109.3 109.3 13.8 23.9 39.7 40 69.3 40zm-79.6-88.4c2.5 .3 5 .4 7.6 .4 35.3 0 64-28.7 64-64 0-2.6-.2-5.1-.4-7.6-37.4 3.9-67.2 33.7-71.1 71.1zm45.6-115c10.8-3 22.2-4.5 33.9-4.5 8.8 0 17.5 .9 25.8 2.6 .3 .1 .5 .1 .8 .2 57.9 12.2 101.4 63.7 101.4 125.2 0 70.7-57.3 128-128 128-61.6 0-113-43.5-125.2-101.4-1.8-8.6-2.8-17.5-2.8-26.6 0-11 1.4-21.8 4-32 .2-.7 .3-1.3 .5-1.9 11.9-43.4 46.1-77.6 89.5-89.5z"></path></svg></a>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="text-xs text-gray-500 mb-1">{{product.category.name}}</div>
+            <h3 class="font-medium mb-1 cursor-pointer " [title]="product.slug"><a class="line-clamp-2" [routerLink]="['/products', product._id]">{{product.title}}</a></h3>
+            <div class="flex items-center mb-2">
+              <div class="flex text-amber-400 mr-2">
+                <div class="text-yellow-400">
+
+                @for (stars of product.ratingsAverage | stars : 5; track $index) {
+                  @if (stars === 'full') {
+                    <svg data-prefix="fas" data-icon="star" class="svg-inline--fa fa-star" role="img" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"></path></svg>
+                  }@else if(stars === "half" )
+                  {
+                    <svg data-prefix="far" data-icon="star-half-stroke" class="svg-inline--fa fa-star-half-stroke" role="img" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9zM264.1 91.8l0 284.1-100.1 50.9 19.8-125.5c1.2-7.6-1.3-15.3-6.7-20.7l-89.8-89.9 125.5-20c7.6-1.2 14.1-6 17.6-12.8l33.8-66.2zm48 284.1l0-284.1 33.8 66.2c3.5 6.8 10 11.6 17.6 12.8l125.5 20-89.8 89.9c-5.4 5.4-7.9 13.1-6.7 20.7l19.8 125.5-100.1-50.9z"></path></svg>
+                  }@else if (stars === "empty") {
+                    <svg data-prefix="far" data-icon="star" class="svg-inline--fa fa-star" role="img" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M288.1-32c9 0 17.3 5.1 21.4 13.1L383 125.3 542.9 150.7c8.9 1.4 16.3 7.7 19.1 16.3s.5 18-5.8 24.4L441.7 305.9 467 465.8c1.4 8.9-2.3 17.9-9.6 23.2s-17 6.1-25 2L288.1 417.6 143.8 491c-8 4.1-17.7 3.3-25-2s-11-14.2-9.6-23.2L134.4 305.9 20 191.4c-6.4-6.4-8.6-15.8-5.8-24.4s10.1-14.9 19.1-16.3l159.9-25.4 73.6-144.2c4.1-8 12.4-13.1 21.4-13.1zm0 76.8L230.3 158c-3.5 6.8-10 11.6-17.6 12.8l-125.5 20 89.8 89.9c5.4 5.4 7.9 13.1 6.7 20.7l-19.8 125.5 113.3-57.6c6.8-3.5 14.9-3.5 21.8 0l113.3 57.6-19.8-125.5c-1.2-7.6 1.3-15.3 6.7-20.7l89.8-89.9-125.5-20c-7.6-1.2-14.1-6-17.6-12.8L288.1 44.8z"></path></svg>
+                  }
+                }
+                </div>
+              </div>
+              <span class="text-xs text-gray-500">{{product.ratingsAverage}}<!-- --> (<!-- -->{{product.ratingsQuantity}}<!-- -->)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+               @if (product.priceAfterDiscount) {
+                 <span class="text-lg font-bold text-primary-600">{{product.priceAfterDiscount}}<!-- --> EGP</span>
+                <span class="text-sm text-gray-500 line-through ml-2">{{product.price}}<!-- --> EGP</span>
+               }@else {
+                  <span class="text-lg font-bold text-primary-600">{{product.price}}<!-- --> EGP</span>
+               }
+              </div>
+              <button (click)="addToCart(product)" class="h-10 w-10 rounded-full flex items-center justify-center transition bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-70" tabindex="0" [disabled]="isLoading(product._id)">
+                @if (isLoading(product._id)) {
+                  <svg data-prefix="fas" data-icon="spinner" class="svg-inline--fa fa-spinner animate-spin w-5 h-5" role="img" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M208 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm0 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM48 208a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm368 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM75 369.1A48 48 0 1 1 142.9 437 48 48 0 1 1 75 369.1zM75 75A48 48 0 1 1 142.9 142.9 48 48 0 1 1 75 75zM437 369.1A48 48 0 1 1 369.1 437 48 48 0 1 1 437 369.1z"></path></svg>
+                } @else if (isSuccess(product._id)) {
+                  <svg class="w-5 h-5" viewBox="0 0 448 512" fill="currentColor"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>
+                } @else {
+                  <svg class="w-5 h-5" viewBox="0 0 448 512" fill="currentColor"><path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"></path></svg>
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+       }

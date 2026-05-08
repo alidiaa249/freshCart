@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-gray-50/50">
+  @if (isLoading()) {
+    <div class="container mx-auto px-4 py-20 text-center">
+      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
+      <p class="mt-4 text-gray-500">Loading wishlist...</p>
+    </div>
+  } @else {
+    <div class="bg-white border-b border-gray-100">
+      <div class="container mx-auto px-4 py-8">
+        <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+          <a class="hover:text-primary-600 transition-colors" routerLink="/">Home</a>
+          <span>/</span>
+          <span class="text-gray-900 font-medium">Wishlist</span>
+        </nav>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
+              <svg data-prefix="fas" data-icon="heart" class="svg-inline--fa fa-heart text-xl text-red-500" role="img" viewBox="0 0 512 512" aria-hidden="true">
+                <path fill="currentColor" d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"></path>
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">My Wishlist</h1>
+              <p class="text-gray-500 text-sm">{{ wishlistItems().length }} {{ wishlistItems().length === 1 ? 'item' : 'items' }} saved</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="container mx-auto px-4 py-4">
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative">
+          <span class="block sm:inline">{{ error() }}</span>
+          <button class="absolute top-0 bottom-0 right-0 px-4 py-3" (click)="clearError()">
+            <svg class="h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    }
+
+    <div class="container mx-auto px-4 py-8">
+      @if (wishlistItems().length === 0) {
+        <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center">
+            <svg data-prefix="fas" data-icon="heart" class="svg-inline--fa fa-heart text-4xl text-red-300" role="img" viewBox="0 0 512 512" aria-hidden="true">
+              <path fill="currentColor" d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Your wishlist is empty</h3>
+          <p class="text-gray-500 mb-8">Save items you love to your wishlist and revisit them anytime.</p>
+          <a routerLink="/products" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-all">
+            Discover Products
+          </a>
+        </div>
+      } @else {
+        <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-100 text-sm font-medium text-gray-500">
+            <div class="col-span-6">Product</div>
+            <div class="col-span-2 text-center">Price</div>
+            <div class="col-span-2 text-center">Status</div>
+            <div class="col-span-2 text-center">Actions</div>
+          </div>
+          <div class="divide-y divide-gray-100">
+            @for (item of wishlistItems(); track item.id) {
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 md:px-6 md:py-5 items-center hover:bg-gray-50/50 transition-colors">
+                <div class="md:col-span-6 flex items-center gap-4">
+                  <a class="w-20 h-20 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0" [routerLink]="['/products', item.id]">
+                    <img [alt]="item.product?.title || item.title" class="w-full h-full object-contain p-2" [src]="item.product?.imageCover || item.imageCover">
+                  </a>
+                  <div class="min-w-0">
+                    <a class="font-medium text-gray-900 hover:text-primary-600 transition-colors line-clamp-2" [routerLink]="['/products', item.id]">
+                      {{ item.product?.title || item.title }}
+                    </a>
+                    <p class="text-sm text-gray-400 mt-1">{{ item.product?.category?.name || item.category?.name || 'Uncategorized' }}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2 flex md:justify-center items-center gap-2">
+                  <span class="md:hidden text-sm text-gray-500">Price:</span>
+                  <div class="text-right md:text-center">
+                    <div class="font-semibold text-gray-900">{{ item.product?.price || item.price || 0 }} EGP</div>
+                  </div>
+                </div>
+                <div class="md:col-span-2 flex md:justify-center">
+                  <span class="md:hidden text-sm text-gray-500 mr-2">Status:</span>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    In Stock
+                  </span>
+                </div>
+                <div class="md:col-span-2 flex items-center gap-2 md:justify-center">
+                  <button class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-primary-600 text-white hover:bg-primary-700" (click)="addToCart(item.id)">
+                    <svg data-prefix="fas" data-icon="cart-shopping" class="svg-inline--fa fa-cart-shopping text-xs" role="img" viewBox="0 0 640 512" aria-hidden="true">
+                      <path fill="currentColor" d="M24-16C10.7-16 0-5.3 0 8S10.7 32 24 32l45.3 0c3.9 0 7.2 2.8 7.9 6.6l52.1 286.3c6.2 34.2 36 59.1 70.8 59.1L456 384c13.3 0 24-10.7 24-24s-10.7-24-24-24l-255.9 0c-11.6 0-21.5-8.3-23.6-19.7l-5.1-28.3 303.6 0c30.8 0 57.2-21.9 62.9-52.2L568.9 69.9C572.6 50.2 557.5 32 537.4 32l-412.7 0-.4-2c-4.8-26.6-28-46-55.1-46L24-16zM208 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm224 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"></path>
+                    </svg>
+                    <span class="md:hidden lg:inline">Add to Cart</span>
+                  </button>
+                  <button class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50 transition-all" title="Remove" (click)="removeItem(item.id)">
+                    <svg data-prefix="fas" data-icon="trash" class="svg-inline--fa fa-trash text-sm" role="img" viewBox="0 0 448 512" aria-hidden="true">
+                      <path fill="currentColor" d="M136.7 5.9L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-8.7-26.1C306.9-7.2 294.7-16 280.9-16L167.1-16c-13.8 0-26 8.8-30.4 21.9zM416 144L32 144 53.1 467.1C54.7 492.4 75.7 512 101 512L347 512c25.3 0 46.3-19.6 47.9-44.9L416 144z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center justify-between">
+          <a class="text-gray-500 hover:text-primary-600 text-sm font-medium transition-colors" routerLink="/products">← Continue Shopping</a>
+        </div>
+      }
+    </div>
+  }
+</div>
