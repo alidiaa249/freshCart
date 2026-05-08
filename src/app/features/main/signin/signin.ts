@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { User } from '../../../core/services/user';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription, forkJoin } from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { CartWishlistState } from '../../../core/services/cart-wishlist-state';
 
 @Component({
   selector: 'app-signin',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './signin.html',
   styleUrl: './signin.css',
 })
@@ -34,9 +34,7 @@ export class Signin {
   loginform: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$'),
-    ]),
+      Validators.required, Validators.minLength(8),    ]),
   });
 
   login() {
@@ -60,8 +58,12 @@ export class Signin {
               console.log('Local cart and wishlist synced');
               this._state.refreshCartCount();
               this._state.refreshWishlistCount();
+               this._toast.show('Cart and wishlist synced', 'info');
             },
-            error: (err) => console.error('Sync error', err),
+            error: (err) => {
+              console.error('Sync error', err);
+              this._toast.show('Failed to sync cart and wishlist', 'error');
+            },
             complete: () => this._router.navigate(['/Home']),
           });
         },

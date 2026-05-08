@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { ToastService } from '../../../shared/services/toast';
 
 @Component({
   selector: 'app-signup',
@@ -15,12 +16,15 @@ import { RouterLink } from '@angular/router';
 export class Signup {
   private readonly _authserv = inject(User);
 
+  private readonly _toast = inject(ToastService);
 
   apierrormessage = '';
   apisuccessmessage = '';
   isloading = false;
   registersub = new Subscription();
   private readonly _router = inject(Router);
+  showpass = false;
+  showRePassword = false;
   passwordValue = signal('');
 
   registerform: FormGroup = new FormGroup(
@@ -40,6 +44,7 @@ export class Signup {
           '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
         ),
       ]),
+      terms: new FormControl(false, [Validators.requiredTrue]),
     },
     { validators: [this.confirmpassword.bind(this)] }
   );
@@ -81,6 +86,10 @@ export class Signup {
     return this.registerform.get('rePassword')!;
   }
 
+  get terms() {
+    return this.registerform.get('terms')!;
+  }
+
   onPasswordInput() {
     this.passwordValue.set(this.registerform.get('password')?.value || '');
   }
@@ -97,11 +106,14 @@ export class Signup {
         next: (res) => {
           this.apisuccessmessage = res.message;
           this.isloading = false;
+          this._toast.show('Registration successful', 'success');
           this._router.navigate(['/signin']);
+
         },
         error: (err: HttpErrorResponse) => {
-          this.apierrormessage = err.error.message;
+
           this.isloading = false;
+          this._toast.show(err.error.message || 'Registration failed', 'error');
         },
         complete: () => {
           this.isloading = false;

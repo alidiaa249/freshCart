@@ -17,6 +17,8 @@ import { Settings } from './features/settings/settings';
 import { Allorders } from './features/main/allorders/allorders';
 import { Contact } from './features/contact/contact';
 import { Notfoundpage } from './features/notfoundpage/notfoundpage';
+import { Terms } from './features/terms/terms';
+import { Privacy } from './features/privacy/privacy';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'Home', pathMatch: 'full' },
@@ -47,7 +49,10 @@ export const routes: Routes = [
 
 
 {path:"allorders" , component:Allorders , title: "Orders"},
-{path:"contact" , component:Contact , title: "Contactc"},
+{path:"contact" , component:Contact , title: "Contact"}, 
+{path:"terms" , component:Terms , title: "Terms"}, 
+{path:"privacy" , component:Privacy , title: "Privacy"}, 
+
 {path:"**" , component:Notfoundpage , title: "Not Found"}
 
 ];

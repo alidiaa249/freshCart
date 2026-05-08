@@ -5,11 +5,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { User } from '../../core/services/user';
 import { AuthService } from '../../core/services/auth';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ToastComponent } from '../../shared/components/toast/toast';
+
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, ReactiveFormsModule , ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule ],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

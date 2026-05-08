@@ -1,3 +1,4 @@
+import { cartCount } from './../../../core/services/cart-wishlist-signals';
 import { Cart } from '../../../core/services/cart';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -39,7 +40,6 @@ interface CartProduct {
 export class Cartpage implements OnInit {
   private cartService = inject(Cart);
   private platformId = inject(PLATFORM_ID);
-
   isLoggedIn = signal(false);
   cartItems = signal<CartProduct[]>([]);
   localCartItems = signal<LocalCartItem[]>([]);
@@ -168,5 +168,24 @@ export class Cartpage implements OnInit {
   private recalculateTotal(): void {
     const total = this.cartItems().reduce((sum, item) => sum + item.price * item.count, 0);
     this.totalPrice.set(total);
+  }
+
+  clearAll(): void {
+    if (this.isLoggedIn()) {
+      this.cartService.clearusercart().subscribe({
+        next: () => {
+          this.cartItems.set([]);
+          this.totalPrice.set(0);
+          this.cartCount = computed<number>(()=>0); 
+        },
+        error: () => {},
+      });
+    } else {
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem('cart');
+        this.localCartItems.set([]);
+        this.totalPrice.set(0);
+      }
+    }
   }
 }
