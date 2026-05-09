@@ -94,7 +94,7 @@ export class Cart {
 
   payonline(data: any, cartid: string): Observable<any> {
     return this._http.post(
-      environment.baseurl + `/api/v1/orders/checkout-session/${cartid}?url=http://localhost:4200`,
+      environment.baseurl + `/api/v1/orders/checkout-session/${cartid}?url=http://${window.location.host}`,
       data,
       {
         headers: {

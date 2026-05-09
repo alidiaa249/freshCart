@@ -1,6 +1,6 @@
 import { Cart } from '../../../core/services/cart';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, OnInit } from '@angular/core';
-import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
+import {  isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { ToastService } from '../../../shared/services/toast';
 
 @Component({
   selector: 'app-checkoutpage',
-  imports: [CurrencyPipe, RouterLink, FormsModule],
+  imports: [ RouterLink, FormsModule],
   templateUrl: './checkoutpage.html',
   styleUrl: './checkoutpage.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -78,6 +78,8 @@ export class Checkoutpage implements OnInit {
         this.loadAddresses();
       }
     }
+  
+   
   }
 
   private loadCart(): void {
@@ -164,6 +166,7 @@ export class Checkoutpage implements OnInit {
       this.cartService.payonline(data, this.cartId()).subscribe({
         next: (res: any) => {
           if (isPlatformBrowser(this.platformId) && res?.session?.url) {
+           
             window.location.href = res.session.url;
           }
         },

@@ -19,6 +19,8 @@ import { Contact } from './features/contact/contact';
 import { Notfoundpage } from './features/notfoundpage/notfoundpage';
 import { Terms } from './features/terms/terms';
 import { Privacy } from './features/privacy/privacy';
+import { AuthGuard } from './core/guards/auth.guard';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'Home', pathMatch: 'full' },
@@ -29,8 +31,8 @@ export const routes: Routes = [
   {path: 'products/:id', loadComponent: () => import('./features/main/productsdetails/productsdetails').then(m => m.Productsdetails), title: 'Product Details' },
   {path:'brands' , component:Brands , title:'Brands'},
   {path:'search' , component:Searchpage , title:'Search'} ,
-  {path:'signup' , component:Signup , title:'Register'} ,
-  {path:'signin' , component:Signin , title:'Login'} ,
+  {path:'signup' , component:Signup , title:'Register', canActivate: [AuthGuard]} ,
+  {path:'signin' , component:Signin , title:'Login', canActivate: [AuthGuard]} ,
   {path:'forgetpassword' , component:Forgetpass , title:'Forget Password'} ,
   {path:'cart' , component:Cartpage , title:'cart'} ,
   {path:'wishlist' , component:Wishlistpage , title:'fav'} ,
